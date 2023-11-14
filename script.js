@@ -231,6 +231,7 @@ function handleMouseDown(e) {
   } else {
     mortar_circle.x = pt.x;
     mortar_circle.y = pt.y;
+    calculateShot();
   }
   redraw();
 }
