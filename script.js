@@ -33,7 +33,7 @@ const conversionTable = [
 ];
 const maps = [
   { name: "Fallujah", width: 3000, height: 3000 },
-  { name: "Fallujah", width: 1000, height: 1000 },
+  { name: "Skorpo", width: 7600, height: 7600 },
 ];
 
 let currentMap = maps[0];
@@ -42,8 +42,17 @@ const mapImage = new Image();
 mapImage.src = `maps/${currentMap.name}.png`;
 
 let scale = 0.5;
+let minScale = 0.2; // Set your minimum scale value
+let maxScale = 2.0; // Set your maximum scale value
+
 let offsetX = 0;
 let offsetY = 0;
+
+let minOffsetX = 0;
+let minOffsetY = 0;
+let maxOffsetX = canvas.width - currentMap.width * minScale;
+let maxOffsetY = canvas.height - currentMap.height * minScale;
+
 let isDragging = false;
 let dragStartX = 0;
 let dragStartY = 0;
@@ -91,8 +100,12 @@ function drawText(meters, mils, angle) {
   milsSpan.innerText = mils;
   angleSpan.innerText = angle;
 }
+function handleContextMenu(e) {
+  e.preventDefault(); // Prevent the default right-click context menu
+}
 
 function handleMouseDown(e) {
+  e.preventDefault();
   if (e.button === 2) {
     isDragging = true;
     dragStartX = e.clientX - offsetX;
@@ -120,7 +133,7 @@ function handleMouseDown(e) {
 
         drawText(distanceFromCenter, miliradians, angle);
       } else {
-        console.log(`Out of range!`);
+        drawText("Out of range!", "Out of range!", "Out of range!");
       }
     } else {
       circle.x = mouseX;
@@ -137,8 +150,19 @@ function handleMouseUp() {
 
 function handleMouseMove(e) {
   if (isDragging) {
-    offsetX = e.clientX - dragStartX;
-    offsetY = e.clientY - dragStartY;
+    if (canvas.width - currentMap.width * scale > 0) {
+      offsetX = Math.min(
+        Math.max(e.clientX - dragStartX, minOffsetX),
+        maxOffsetX
+      );
+      offsetY = Math.min(
+        Math.max(e.clientY - dragStartY, minOffsetY),
+        maxOffsetY
+      );
+    } else {
+      offsetX = e.clientX - dragStartX;
+      offsetY = e.clientY - dragStartY;
+    }
     draw();
   }
 }
@@ -148,10 +172,16 @@ function handleWheel(e) {
 
   const delta = e.deltaY;
   if (delta < 0) {
-    scale *= 1.01;
+    scale *= 1.05;
   } else {
-    scale /= 1.01;
+    scale /= 1.05;
   }
+  maxOffsetX = canvas.width - currentMap.width * scale;
+  maxOffsetY = canvas.height - currentMap.height * scale;
+
+  offsetX = Math.min(Math.max(offsetX, minOffsetX), maxOffsetX);
+  offsetY = Math.min(Math.max(offsetY, minOffsetY), maxOffsetY);
+
   draw();
 }
 
@@ -177,6 +207,11 @@ function changeMap() {
   circle.x = 0;
   circle.y = 0;
 
+  maxOffsetX = canvas.width - currentMap.width * scale;
+  maxOffsetY = canvas.height - currentMap.height * scale;
+  offsetX = Math.min(Math.max(offsetX, minOffsetX), maxOffsetX);
+  offsetY = Math.min(Math.max(offsetY, minOffsetY), maxOffsetY);
+
   draw();
 }
 function init() {
@@ -191,7 +226,7 @@ function init() {
   canvas.addEventListener("mouseup", handleMouseUp);
   canvas.addEventListener("mousemove", handleMouseMove);
   canvas.addEventListener("wheel", handleWheel);
-
+  canvas.addEventListener("contextmenu", handleContextMenu);
   switchMapButton.addEventListener("click", changeMap);
 }
 
