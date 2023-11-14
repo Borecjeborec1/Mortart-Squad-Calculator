@@ -33,15 +33,15 @@ const conversionTable = [
   [1250, 800],
 ];
 const maps = [
+  { name: "Skorpo", width: 2700, height: 1500 },
   { name: "Fallujah", width: 3000, height: 3000 },
   { name: "Skorpo-full", width: 7600, height: 7600 },
-  { name: "Skorpo", width: 2700, height: 1500 },
 ];
 
 let currentMap = maps[0];
 
 const mapImage = new Image();
-mapImage.src = `maps/${currentMap.name}.png`;
+mapImage.src = `maps/${currentMap.name}.jpg`;
 
 let lastX = canvas.width / 2;
 let lastY = canvas.height / 2;
@@ -53,7 +53,7 @@ const MORTAR_MIN_PERIMETER = 50;
 const MORTAR_MAX_PERIMETER = 1250;
 
 const mortar_circle = {};
-const artiery_circle = {};
+const artillery_circle = {};
 
 function drawCircle(perimeter, color) {
   ctx.beginPath();
@@ -65,12 +65,19 @@ function drawCircle(perimeter, color) {
 
 function drawArtiery(color) {
   ctx.beginPath();
-  ctx.arc(artiery_circle.x, artiery_circle.y, 5, 0, 2 * Math.PI);
+  ctx.arc(artillery_circle.x, artillery_circle.y, 5, 0, 2 * Math.PI);
   ctx.fillStyle = color;
   ctx.fill();
   ctx.stroke();
 }
-
+function drawConnectingLine() {
+  ctx.beginPath();
+  ctx.moveTo(artillery_circle.x, artillery_circle.y);
+  ctx.lineTo(mortar_circle.x, mortar_circle.y);
+  ctx.strokeStyle = "blue";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+}
 function drawText(meters, mils, angle) {
   metersSpan.innerText = meters;
   milsSpan.innerText = mils;
@@ -100,7 +107,7 @@ function changeMap() {
   const nextIndex = (selectedIndex + 1) % maps.length;
 
   currentMap = maps[nextIndex];
-  mapImage.src = `maps/${currentMap.name}.png`;
+  mapImage.src = `maps/${currentMap.name}.jpg`;
 
   mortar_circle.x = 0;
   mortar_circle.y = 0;
@@ -198,6 +205,7 @@ function redraw() {
     drawCircle(MORTAR_MIN_PERIMETER, "rgba(200, 200, 200, 0)");
     drawCircle(MORTAR_MAX_PERIMETER, "rgba(255, 255, 255, 0.2)");
     drawArtiery("red");
+    drawConnectingLine();
   }
 }
 
@@ -217,8 +225,8 @@ function handleMouseDown(e) {
     e.offsetY || e.pageY - canvas.offsetTop
   );
   if (mortar_circle.x) {
-    artiery_circle.x = pt.x;
-    artiery_circle.y = pt.y;
+    artillery_circle.x = pt.x;
+    artillery_circle.y = pt.y;
     calculateShot();
   } else {
     mortar_circle.x = pt.x;
@@ -228,14 +236,14 @@ function handleMouseDown(e) {
 }
 function calculateShot() {
   const distance = Math.sqrt(
-    (artiery_circle.x - mortar_circle.x) ** 2 +
-      (artiery_circle.y - mortar_circle.y) ** 2
+    (artillery_circle.x - mortar_circle.x) ** 2 +
+      (artillery_circle.y - mortar_circle.y) ** 2
   );
   if (distance >= MORTAR_MIN_PERIMETER && distance <= MORTAR_MAX_PERIMETER) {
     const angle =
       (Math.atan2(
-        artiery_circle.y - mortar_circle.y,
-        artiery_circle.x - mortar_circle.x
+        artillery_circle.y - mortar_circle.y,
+        artillery_circle.x - mortar_circle.x
       ) *
         (180 / Math.PI) +
         450) %

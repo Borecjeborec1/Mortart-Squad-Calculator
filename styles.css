@@ -2,6 +2,7 @@ body {
 	margin: 0;
 	overflow: hidden;
 	background: rgb(104, 102, 102);
+	user-select: none;
 }
 
 canvas {
