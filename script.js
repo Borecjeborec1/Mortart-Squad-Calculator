@@ -34,7 +34,7 @@ const conversionTable = [
 ];
 const maps = [
   { name: "Fallujah", width: 3000, height: 3000 },
-  { name: "Skorpo", width: 7600, height: 7600 },
+  { name: "Skorpo-full", width: 7600, height: 7600 },
   { name: "Skorpo", width: 2700, height: 1500 },
 ];
 
