@@ -6,13 +6,33 @@
     <title>Zoomable and Draggable Map</title>
     <script src="./script.js" defer></script>
     <link rel="stylesheet" href="./styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+    />
   </head>
   <body>
     <canvas id="mapCanvas"></canvas>
-    <button id="switchMapButton">Switch Map</button>
-    <button id="resetButton">Remove Pins</button>
+    <button class="styledBtn" id="switchMapButton">Switch Map</button>
+    <button class="styledBtn" id="resetButton">Remove Pins</button>
     <h3>Distance (meters): <span id="metersSpan"></span></h3>
     <h3>Distance (mils): <span id="milsSpan"></span></h3>
     <h3>Distance (angle): <span id="angleSpan"></span></h3>
+    <button
+      style="
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+        width: 50px;
+        height: 50px;
+      "
+    >
+      <a href="https://github.com/Borecjeborec1/Mortart-Squad-Calculator">
+        <i
+          class="fab fa-github"
+          style="font-size: 30px; text-decoration: none; color: initial"
+        ></i>
+      </a>
+    </button>
   </body>
 </html>

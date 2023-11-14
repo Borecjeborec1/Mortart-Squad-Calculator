@@ -79,9 +79,9 @@ function drawConnectingLine() {
   ctx.stroke();
 }
 function drawText(meters, mils, angle) {
-  metersSpan.innerText = meters;
-  milsSpan.innerText = mils;
-  angleSpan.innerText = angle;
+  metersSpan.innerText = (+meters).toFixed(2);
+  milsSpan.innerText = (+mils).toFixed(2);
+  angleSpan.innerText = (+angle).toFixed(2);
 }
 
 function removePins() {

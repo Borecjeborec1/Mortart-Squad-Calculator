@@ -3,6 +3,7 @@ body {
 	overflow: hidden;
 	background: rgb(104, 102, 102);
 	user-select: none;
+	height: 100%;
 }
 
 canvas {
@@ -10,12 +11,13 @@ canvas {
 	display: block;
 }
 
-button {
+.styledBtn {
 	position: relative;
 	top: 10px;
 	left: 10px;
 	padding: 10px;
 	font-size: 16px;
+	cursor: pointer
 }
 
 h3 {
