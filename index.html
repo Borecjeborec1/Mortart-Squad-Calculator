@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Zoomable and Draggable Map</title>
-        <script src="./script.js" defer></script>
-        <link rel="stylesheet" href="./styles.css">
-    </head>
-    <body>
-        <canvas id="mapCanvas"></canvas>
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zoomable and Draggable Map</title>
+    <script src="./script.js" defer></script>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <canvas id="mapCanvas"></canvas>
+    <button id="switchMapButton">Switch Map</button>
+    <h3>Distance (meters): <span id="metersSpan"></span></h3>
+    <h3>Distance (mils): <span id="milsSpan"></span></h3>
+    <h3>Distance (angle): <span id="angleSpan"></span></h3>
+  </body>
 </html>
-

@@ -1,9 +1,23 @@
 body {
 	margin: 0;
 	overflow: hidden;
+	background: #121212;
 }
 
 canvas {
+	position: absolute;
 	display: block;
 }
 
+button {
+	position: relative;
+	top: 10px;
+	left: 10px;
+	padding: 10px;
+	font-size: 16px;
+}
+
+h3 {
+	position: relative;
+	z-index: 3;
+}
